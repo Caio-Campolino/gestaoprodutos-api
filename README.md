@@ -21,12 +21,12 @@ Este projeto foi construído utilizando as seguintes tecnologias:
 
 A aplicação segue uma arquitetura em camadas para garantir a separação de responsabilidades e a manutenibilidade do código:
 
-- **Resource (Controller)**: Camada responsável por expor os endpoints da API REST e receber as requisições HTTP.
+- **Controller**: Camada responsável por expor os endpoints da API REST e receber as requisições HTTP.
 - **Service**: Camada que contém a lógica de negócio da aplicação.
 - **Repository**: Camada de acesso a dados, que utiliza o Spring Data JPA para interagir com o banco de dados.
 - **Model (Entity)**: Camada que representa as entidades do domínio da aplicação.
 
-## ⚙️ Como Executar o Projeto
+##  Como Executar o Projeto
 
 Siga os passos abaixo para executar a aplicação localmente.
 
@@ -43,28 +43,28 @@ cd gestaoprodutos-api
 
 A API estará disponível em `http://localhost:8080`.
 
-## 📖 Endpoints da API
+##  Endpoints da API
 
 A API expõe os seguintes endpoints para manipulação de Categorias e Produtos.
 
-### Categorias
+### Recurso: Categorias
 
 | Método HTTP | URI               | Descrição                    | Exemplo de Corpo (Body)                                             |
 |-------------|-------------------|------------------------------|---------------------------------------------------------------------|
-| `POST`      | `/categorias`     | Cria uma nova categoria.     | `{"nome": "Livros", "descricao": "Livros de ficção e não-ficção"}` |
+| `POST`      | `/categorias`     | Cria uma nova categoria.     | `{"nome": "Eletrônicos", "descricao": "Dispositivos eletrônicos"}`   |
 | `GET`       | `/categorias`     | Lista todas as categorias.   | N/A                                                                 |
 | `GET`       | `/categorias/{id}`| Busca uma categoria por ID.  | N/A                                                                 |
-| `PUT`       | `/categorias/{id}`| Atualiza uma categoria.      | `{"nome": "Livros Técnicos", "descricao": "Livros sobre tecnologia"}` |
+| `PUT`       | `/categorias/{id}`| Atualiza uma categoria.      | `{"nome": "Eletrônicos e Acessórios", "descricao": "..."}`         |
 | `DELETE`    | `/categorias/{id}`| Deleta uma categoria por ID. | N/A                                                                 |
 
-### Produtos
+### Recurso: Produtos
 
 | Método HTTP | URI             | Descrição                 | Exemplo de Corpo (Body)                                                                                             |
 |-------------|-----------------|---------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `POST`      | `/produtos`     | Cria um novo produto.     | `{"nome": "O Senhor dos Anéis", "descricao": "Edição completa", "preco": 150.00, "categoria": {"id": 1}}` |
+| `POST`      | `/produtos`     | Cria um novo produto.     | `{"nome": "Mouse Gamer", "preco": 250.50, "categoriaId": 1, "descricao": "Mouse com alta precisao"}` |
 | `GET`       | `/produtos`     | Lista todos os produtos.  | N/A                                                                                                                 |
 | `GET`       | `/produtos/{id}`| Busca um produto por ID.  | N/A                                                                                                                 |
-| `PUT`       | `/produtos/{id}`| Atualiza um produto.      | `{"nome": "O Hobbit", "descricao": "Edição de capa dura", "preco": 89.90, "categoria": {"id": 1}}`       |
+| `PUT`       | `/produtos/{id}`| Atualiza um produto.      | `{"nome": "Mouse Gamer Pro", "preco": 299.90, "categoriaId": 1, "descricao": "Nova versão"}`       |
 | `DELETE`    | `/produtos/{id}`| Deleta um produto por ID. | N/A                                                                                                                 |
 
 ##  Acesso ao Banco de Dados (H2 Console)
