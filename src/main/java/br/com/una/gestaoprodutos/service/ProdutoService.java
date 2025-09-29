@@ -1,3 +1,4 @@
+// gestaoprodutos/src/main/java/br/com/una/gestaoprodutos/service/ProdutoService.java
 package br.com.una.gestaoprodutos.service;
 
 import java.util.List;
@@ -9,43 +10,31 @@ import org.springframework.stereotype.Service;
 import br.com.una.gestaoprodutos.model.Produto;
 import br.com.una.gestaoprodutos.repository.ProdutoRepository;
 
-@Service // Marca a classe como um serviço de negócio
+@Service // Define esta classe como um serviço de negócio do Spring
 public class ProdutoService {
 
-    @Autowired // Injeta a dependência do repositório automaticamente
+    @Autowired // Injeta a dependência do ProdutoRepository automaticamente
     private ProdutoRepository produtoRepository;
 
-    /**
-     * Salva um novo produto ou atualiza um existente.
-     * @param produto O objeto Produto a ser salvo.
-     * @return O Produto salvo.
-     */
-    public Produto save(Produto produto) {
-        return produtoRepository.save(produto);
-    }
-
-    /**
-     * Retorna uma lista com todos os produtos.
-     * @return Lista de todos os produtos.
-     */
-    public List<Produto> findAll() {
+    public List<Produto> buscarTodos() {
         return produtoRepository.findAll();
     }
 
-    /**
-     * Busca um produto pelo seu ID.
-     * @param id O ID do produto.
-     * @return Um Optional contendo o produto se encontrado, ou vazio caso contrário.
-     */
-    public Optional<Produto> findById(Long id) {
-        return produtoRepository.findById(id);
+    public Optional<Produto> buscarPorId(Long codigo) {
+        return produtoRepository.findById(codigo);
     }
 
-    /**
-     * Deleta um produto pelo seu ID.
-     * @param id O ID do produto a ser deletado.
-     */
-    public void deleteById(Long id) {
-        produtoRepository.deleteById(id);
+    public Produto salvar(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
+    public void deletarPorId(Long codigo) {
+        produtoRepository.deleteById(codigo);
+    }
+
+    public Produto atualizar(Long codigo, Produto produto) {
+        // Garante que estamos atualizando o produto com o código correto
+        produto.setCodigo(codigo);
+        return produtoRepository.save(produto);
     }
 }
