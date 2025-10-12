@@ -1,79 +1,97 @@
-# Gestão de Produtos API
+# API de Gestão de Produtos
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
 ![Maven](https://img.shields.io/badge/Maven-4.0-red)
 
-API RESTful para gestão de produtos e categorias, desenvolvida como projeto para a disciplina de Sistemas Distribuídos e Mobile.
+API RESTful desenvolvida como projeto para a disciplina de **Sistemas Distribuídos e Mobile**. A aplicação permite o gerenciamento completo de produtos e suas respectivas categorias.
 
-##  Tecnologias Utilizadas
+## Funcionalidades
 
-Este projeto foi construído utilizando as seguintes tecnologias:
+* CRUD completo para **Categorias**.
+* CRUD completo para **Produtos**.
+* Associação entre Produtos e Categorias (um produto pertence a uma categoria).
+* Endpoint de **filtragem** de produtos por categoria.
+* **Tratamento de exceções** customizado para recursos não encontrados (retorna `404 Not Found`).
 
-- **Java 17**: Linguagem de programação principal.
-- **Spring Boot**: Framework para criação de aplicações Java de forma rápida e configurável.
-- **Spring Data JPA**: Para persistência de dados e comunicação com o banco de dados.
-- **Maven**: Gerenciador de dependências e de build do projeto.
-- **H2 Database**: Banco de dados relacional em memória, utilizado para o ambiente de desenvolvimento.
-- **Lombok**: Para reduzir código boilerplate (getters, setters, etc.).
+## Como Executar o Projeto
 
-##  Arquitetura
+1.  **Pré-requisitos:**
+    * JDK 17 ou superior.
+    * Maven 3.8 ou superior.
 
-A aplicação segue uma arquitetura em camadas para garantir a separação de responsabilidades e a manutenibilidade do código:
+2.  **Clonar o Repositório:**
+    ```bash
+    git clone [https://github.com/Caio-Campolino/gestaoprodutos-api.git](https://github.com/Caio-Campolino/gestaoprodutos-api.git)
+    cd gestaoprodutos-api
+    ```
 
-- **Controller**: Camada responsável por expor os endpoints da API REST e receber as requisições HTTP.
-- **Service**: Camada que contém a lógica de negócio da aplicação.
-- **Repository**: Camada de acesso a dados, que utiliza o Spring Data JPA para interagir com o banco de dados.
-- **Model (Entity)**: Camada que representa as entidades do domínio da aplicação.
+3.  **Compilar e Empacotar:**
+    ```bash
+    ./mvnw clean install
+    ```
 
-##  Como Executar o Projeto
+4.  **Executar a Aplicação:**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+    A API estará disponível em `http://localhost:8080`.
 
-Siga os passos abaixo para executar a aplicação localmente.
+## Documentação dos Endpoints da API
 
-```bash
-# 1. Clone o repositório
-git clone https://github.com/Caio-Campolino/gestaoprodutos-api.git
+A seguir estão listados todos os endpoints disponíveis na aplicação.
 
-# 2. Navegue até a pasta do projeto
-cd gestaoprodutos-api
+---
 
-# 3. Execute a aplicação com o Maven Wrapper
-./mvnw spring-boot:run
-```
+### 📦 Recursos de Categoria
 
-A API estará disponível em `http://localhost:8080`.
+#### `GET /categorias`
+Lista todas as categorias cadastradas.
 
-##  Endpoints da API
+#### `GET /categorias/{id}`
+Busca uma categoria específica pelo seu ID.
 
-A API expõe os seguintes endpoints para manipulação de Categorias e Produtos.
+#### `POST /categorias`
+Cria uma nova categoria.
 
-### Recurso: Categorias
+* **Corpo da Requisição (Exemplo):**
+    ```json
+    {
+        "nome": "Eletrônicos",
+        "descricao": "Dispositivos de tecnologia"
+    }
+    ```
 
-| Método HTTP | URI               | Descrição                    | Exemplo de Corpo (Body)                                             |
-|-------------|-------------------|------------------------------|---------------------------------------------------------------------|
-| `POST`      | `/categorias`     | Cria uma nova categoria.     | `{"nome": "Eletrônicos", "descricao": "Dispositivos eletrônicos"}`   |
-| `GET`       | `/categorias`     | Lista todas as categorias.   | N/A                                                                 |
-| `GET`       | `/categorias/{id}`| Busca uma categoria por ID.  | N/A                                                                 |
-| `PUT`       | `/categorias/{id}`| Atualiza uma categoria.      | `{"nome": "Eletrônicos e Acessórios", "descricao": "..."}`         |
-| `DELETE`    | `/categorias/{id}`| Deleta uma categoria por ID. | N/A                                                                 |
+#### `PUT /categorias/{id}`
+Atualiza os dados de uma categoria existente.
 
-### Recurso: Produtos
+* **Corpo da Requisição (Exemplo):**
+    ```json
+    {
+        "nome": "Eletrônicos e Gadgets",
+        "descricao": "Todos os tipos de dispositivos de tecnologia"
+    }
+    ```
 
-| Método HTTP | URI             | Descrição                 | Exemplo de Corpo (Body)                                                                                             |
-|-------------|-----------------|---------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `POST`      | `/produtos`     | Cria um novo produto.     | `{"nome": "Mouse Gamer", "preco": 250.50, "categoriaId": 1, "descricao": "Mouse com alta precisao"}` |
-| `GET`       | `/produtos`     | Lista todos os produtos.  | N/A                                                                                                                 |
-| `GET`       | `/produtos/{id}`| Busca um produto por ID.  | N/A                                                                                                                 |
-| `PUT`       | `/produtos/{id}`| Atualiza um produto.      | `{"nome": "Mouse Gamer Pro", "preco": 299.90, "categoriaId": 1, "descricao": "Nova versão"}`       |
-| `DELETE`    | `/produtos/{id}`| Deleta um produto por ID. | N/A                                                                                                                 |
+#### `DELETE /categorias/{id}`
+Remove uma categoria pelo seu ID.
+*(Obs: A operação falhará se a categoria possuir produtos associados a ela, para proteger a integridade dos dados.)*
 
-##  Acesso ao Banco de Dados (H2 Console)
+---
 
-Durante a execução, é possível acessar o console web do banco de dados H2 para visualizar as tabelas e os dados.
+### 🛍️ Recursos de Produto
 
-- **URL**: `http://localhost:8080/h2-console`
-- **JDBC URL**: `jdbc:h2:mem:testdb`
-- **User Name**: `sa`
-- **Password**: (deixe em branco)
+#### `GET /produtos`
+Lista todos os produtos cadastrados.
 
-Clique em `Connect` para acessar.
+#### `GET /produtos?categoria={id}`
+**Funcionalidade de Filtro:** Filtra a lista de produtos, retornando apenas aqueles que pertencem à categoria com o ID especificado.
+* **Exemplo:** `http://localhost:8080/produtos?categoria=1`
+
+#### `GET /produtos/{id}`
+Busca um produto específico pelo seu ID.
+
+#### `POST /produtos`
+Cria um novo produto, associando-o a uma categoria existente.
+
+* **Corpo da Requisição (Exemplo):
