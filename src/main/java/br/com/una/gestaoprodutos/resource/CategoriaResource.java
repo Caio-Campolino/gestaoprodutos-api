@@ -1,35 +1,51 @@
 package br.com.una.gestaoprodutos.resource;
 
-import java.util.List;
+import br.com.una.gestaoprodutos.model.Categoria;
+import br.com.una.gestaoprodutos.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import br.com.una.gestaoprodutos.model.Categoria;
-import br.com.una.gestaoprodutos.service.CategoriaService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@RestController // Define a classe como um controlador REST
-@RequestMapping("/categorias") // Mapeia todas as requisições para /categorias para este controlador
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/categorias")
 public class CategoriaResource {
 
     @Autowired
     private CategoriaService categoriaService;
 
-    @PostMapping
-    public Categoria create(@RequestBody Categoria categoria) {
-        return categoriaService.save(categoria);
-    }
-
     @GetMapping
-    public List<Categoria> findAll() {
-        return categoriaService.findAll();
+    public ResponseEntity<List<Categoria>> findAll() {
+        List<Categoria> list = categoriaService.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Categoria> findById(@PathVariable Long id) {
-        return categoriaService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Categoria obj = categoriaService.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
-    // Adicione os métodos para PUT (atualizar) e DELETE (remover)
+    @PostMapping
+    public ResponseEntity<Categoria> insert(@RequestBody Categoria obj) {
+        obj = categoriaService.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        categoriaService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Categoria> update(@PathVariable Long id, @RequestBody Categoria obj) {
+        obj = categoriaService.update(id, obj);
+        return ResponseEntity.ok().body(obj);
+    }
 }

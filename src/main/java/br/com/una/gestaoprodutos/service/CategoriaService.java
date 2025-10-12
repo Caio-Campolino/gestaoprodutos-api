@@ -1,31 +1,48 @@
 package br.com.una.gestaoprodutos.service;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import br.com.una.gestaoprodutos.handler.ResourceNotFoundException;
 import br.com.una.gestaoprodutos.model.Categoria;
 import br.com.una.gestaoprodutos.repository.CategoriaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Service // Marca a classe como um serviço de negócio
+import java.util.List;
+
+@Service
 public class CategoriaService {
 
-    @Autowired // Injeta a dependência do repositório automaticamente
+    @Autowired
     private CategoriaRepository categoriaRepository;
-
-    public Categoria save(Categoria categoria) {
-        return categoriaRepository.save(categoria);
-    }
 
     public List<Categoria> findAll() {
         return categoriaRepository.findAll();
     }
 
-    public Optional<Categoria> findById(Long id) {
-        return categoriaRepository.findById(id);
+    public Categoria findById(Long id) {
+        return categoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada com id: " + id));
     }
 
-    public void deleteById(Long id) {
+    public Categoria insert(Categoria obj) {
+        return categoriaRepository.save(obj);
+    }
+
+    public void delete(Long id) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Categoria não encontrada com id: " + id);
+        }
+        // Adicionar tratamento para DataIntegrityViolationException seria o próximo passo
         categoriaRepository.deleteById(id);
+    }
+
+    public Categoria update(Long id, Categoria obj) {
+        Categoria entity = findById(id); // Reutiliza o findById
+        updateData(entity, obj);
+        return categoriaRepository.save(entity);
+    }
+
+    private void updateData(Categoria entity, Categoria obj) {
+        entity.setNome(obj.getNome());
+        entity.setDescricao(obj.getDescricao());
     }
 }

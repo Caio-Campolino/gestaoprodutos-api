@@ -1,13 +1,13 @@
-// gestaoprodutos/src/main/java/br/com/una/gestaoprodutos/repository/ProdutoRepository.java
 package br.com.una.gestaoprodutos.repository;
 
+import br.com.una.gestaoprodutos.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
-import br.com.una.gestaoprodutos.model.Produto;
-
-@Repository // Define esta interface como um componente de repositório do Spring
+@Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-    // A interface JpaRepository já nos fornece todos os métodos básicos de CRUD
-    // (Create, Read, Update, Delete), como findAll(), findById(), save(), deleteById(), etc.
+
+    List<Produto> findByCategoriaId(Long categoriaId);
+
 }
