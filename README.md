@@ -22,7 +22,7 @@ API RESTful desenvolvida como projeto para a disciplina de **Sistemas Distribuí
 
 2.  **Clonar o Repositório:**
     ```bash
-    git clone [https://github.com/Caio-Campolino/gestaoprodutos-api.git](https://github.com/Caio-Campolino/gestaoprodutos-api.git)
+    git clone https://github.com/Caio-Campolino/gestaoprodutos-api.git
     cd gestaoprodutos-api
     ```
 
@@ -94,4 +94,47 @@ Busca um produto específico pelo seu ID.
 #### `POST /produtos`
 Cria um novo produto, associando-o a uma categoria existente.
 
-* **Corpo da Requisição (Exemplo):
+* **Corpo da Requisição (Exemplo):**
+    ```json
+    {
+        "nome": "Notebook Gamer",
+        "preco": 6500.00,
+        "descricao": "Notebook de alta performance para jogos",
+        "categoria": {
+            "id": 1
+        }
+    }
+    ```
+
+#### `PUT /produtos/{id}`
+Atualiza os dados de um produto existente.
+
+* **Corpo da Requisição (Exemplo):**
+    ```json
+    {
+        "nome": "Notebook Gamer Pro",
+        "preco": 7100.00,
+        "descricao": "Versão atualizada com mais memória RAM",
+        "categoria": {
+            "id": 1
+        }
+    }
+    ```
+
+#### `DELETE /produtos/{id}`
+Remove um produto pelo seu ID.
+
+---
+
+### ⚠️ Tratamento de Erros
+
+A API implementa um `ExceptionHandler` global. Em casos de recursos não encontrados (ex: buscar um produto com ID inexistente), a API retornará um status `404 Not Found` com o seguinte formato de corpo:
+
+```json
+{
+    "timestamp": "2025-10-12T02:30:00.123Z",
+    "status": 404,
+    "error": "Recurso não encontrado",
+    "message": "Produto não encontrado com id: 999",
+    "path": "/produtos/999"
+}
